@@ -1,0 +1,8 @@
+# 관리 불필요 폴더
+MasterData_Manager/bin/
+MasterData_Manager/obj/
+.vs/
+
+# 관리 불필요 확장자
+*.bak
+*.cache
