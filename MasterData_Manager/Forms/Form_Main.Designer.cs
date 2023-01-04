@@ -73,6 +73,8 @@
             this.gc_step3_Condition_Name = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gc_step3_Condition_Value = new DevExpress.XtraGrid.Columns.GridColumn();
             this.pnl_Step3_Top = new System.Windows.Forms.Panel();
+            this.sb_Step3_UncheckAll = new DevExpress.XtraEditors.SimpleButton();
+            this.sb_Step3_CheckAll = new DevExpress.XtraEditors.SimpleButton();
             this.tlp_Step3_Checked_Count = new System.Windows.Forms.TableLayoutPanel();
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
             this.lc_Step3_Checked_Count = new DevExpress.XtraEditors.LabelControl();
@@ -85,8 +87,6 @@
             this.cb_Step3 = new DevExpress.XtraEditors.CheckButton();
             this.cb_Step2 = new DevExpress.XtraEditors.CheckButton();
             this.cb_Step1 = new DevExpress.XtraEditors.CheckButton();
-            this.sb_Step3_CheckAll = new DevExpress.XtraEditors.SimpleButton();
-            this.sb_Step3_UncheckAll = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tlp_Main.SuspendLayout();
@@ -592,7 +592,7 @@
             this.sb_Step2_Save.Size = new System.Drawing.Size(124, 34);
             this.sb_Step2_Save.TabIndex = 6;
             this.sb_Step2_Save.Text = "SAVE";
-            this.sb_Step2_Save.Click += new System.EventHandler(this.sb_Step2_Save_Click);
+            this.sb_Step2_Save.Click += new System.EventHandler(this.sb_Execute_Click);
             // 
             // tp_Step3
             // 
@@ -757,6 +757,32 @@
             this.pnl_Step3_Top.Size = new System.Drawing.Size(680, 44);
             this.pnl_Step3_Top.TabIndex = 4;
             // 
+            // sb_Step3_UncheckAll
+            // 
+            this.sb_Step3_UncheckAll.Appearance.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sb_Step3_UncheckAll.Appearance.Options.UseFont = true;
+            this.sb_Step3_UncheckAll.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.sb_Step3_UncheckAll.Location = new System.Drawing.Point(91, 5);
+            this.sb_Step3_UncheckAll.Name = "sb_Step3_UncheckAll";
+            this.sb_Step3_UncheckAll.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.sb_Step3_UncheckAll.Size = new System.Drawing.Size(83, 34);
+            this.sb_Step3_UncheckAll.TabIndex = 13;
+            this.sb_Step3_UncheckAll.Text = "전체해제";
+            this.sb_Step3_UncheckAll.Click += new System.EventHandler(this.sb_Step3_UncheckAll_Click);
+            // 
+            // sb_Step3_CheckAll
+            // 
+            this.sb_Step3_CheckAll.Appearance.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sb_Step3_CheckAll.Appearance.Options.UseFont = true;
+            this.sb_Step3_CheckAll.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.sb_Step3_CheckAll.Location = new System.Drawing.Point(5, 5);
+            this.sb_Step3_CheckAll.Name = "sb_Step3_CheckAll";
+            this.sb_Step3_CheckAll.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.sb_Step3_CheckAll.Size = new System.Drawing.Size(83, 34);
+            this.sb_Step3_CheckAll.TabIndex = 12;
+            this.sb_Step3_CheckAll.Text = "전체선택";
+            this.sb_Step3_CheckAll.Click += new System.EventHandler(this.sb_Step3_CheckAll_Click);
+            // 
             // tlp_Step3_Checked_Count
             // 
             this.tlp_Step3_Checked_Count.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
@@ -831,7 +857,7 @@
             this.sb_Step3_Execute.Size = new System.Drawing.Size(124, 34);
             this.sb_Step3_Execute.TabIndex = 7;
             this.sb_Step3_Execute.Text = "EXECUTE";
-            this.sb_Step3_Execute.Click += new System.EventHandler(this.sb_Step3_Execute_Click);
+            this.sb_Step3_Execute.Click += new System.EventHandler(this.sb_Execute_Click);
             // 
             // lc_Message
             // 
@@ -949,32 +975,6 @@
             this.cb_Step1.Text = "1. 기존 DB Name 조회";
             this.cb_Step1.Click += new System.EventHandler(this.cb_Step_Click);
             // 
-            // sb_Step3_CheckAll
-            // 
-            this.sb_Step3_CheckAll.Appearance.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.sb_Step3_CheckAll.Appearance.Options.UseFont = true;
-            this.sb_Step3_CheckAll.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.sb_Step3_CheckAll.Location = new System.Drawing.Point(5, 5);
-            this.sb_Step3_CheckAll.Name = "sb_Step3_CheckAll";
-            this.sb_Step3_CheckAll.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.sb_Step3_CheckAll.Size = new System.Drawing.Size(83, 34);
-            this.sb_Step3_CheckAll.TabIndex = 12;
-            this.sb_Step3_CheckAll.Text = "전체선택";
-            this.sb_Step3_CheckAll.Click += new System.EventHandler(this.sb_Step3_CheckAll_Click);
-            // 
-            // sb_Step3_UncheckAll
-            // 
-            this.sb_Step3_UncheckAll.Appearance.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.sb_Step3_UncheckAll.Appearance.Options.UseFont = true;
-            this.sb_Step3_UncheckAll.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.sb_Step3_UncheckAll.Location = new System.Drawing.Point(91, 5);
-            this.sb_Step3_UncheckAll.Name = "sb_Step3_UncheckAll";
-            this.sb_Step3_UncheckAll.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.sb_Step3_UncheckAll.Size = new System.Drawing.Size(83, 34);
-            this.sb_Step3_UncheckAll.TabIndex = 13;
-            this.sb_Step3_UncheckAll.Text = "전체해제";
-            this.sb_Step3_UncheckAll.Click += new System.EventHandler(this.sb_Step3_UncheckAll_Click);
-            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1080,6 +1080,7 @@
         private DevExpress.XtraEditors.LabelControl lc_Step3_Checked_Count;
         private DevExpress.XtraEditors.SimpleButton sb_Step3_UncheckAll;
         private DevExpress.XtraEditors.SimpleButton sb_Step3_CheckAll;
+        private DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1;
     }
 }
 
