@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Security.Cryptography;
+using System.Data;
 
 namespace MasterData_Manager
 {
     public class Init_Manager
     {
         public Database INIT_DB = new Database();
-        public Step3 INIT_STEP3 = new Step3();
+        public Step INIT_STEP = new Step();
 
         public void Initialize()
         {
@@ -23,9 +24,9 @@ namespace MasterData_Manager
                 {
                     INIT_DB.Initialize_DB_Config(files[i].FullName);
                 }
-                else if (files[i].Name.ToUpper().Contains("STEP3"))
-                {
-                    INIT_STEP3.Initialize_Step3(files[i].FullName);
+                else if (files[i].Name.ToUpper().Contains("STEP"))
+                {   
+                    INIT_STEP.Initialize_Step(files[i].FullName, files[i].Name.ToUpper().Contains("STEP2") ? 2 : 3);
                 }
             }
         }
@@ -225,8 +226,16 @@ namespace MasterData_Manager
         }
 
 
-        public class Step3
+        public class Step
         {
+            public List<Parameter> Parameters = new List<Parameter>();
+            public struct Parameter
+            {
+                public string Parameter_Code;
+                public string Default_Value;
+                public string Parameter_Remark;
+            }
+
             public List<Table_Info> Exception_Tables = new List<Table_Info>();
             public struct Table_Info
             {
@@ -235,29 +244,63 @@ namespace MasterData_Manager
                 public string Condition_Value;
             }
 
-            public void Initialize_Step3(string target_file_path)
+            public void Initialize_Step(string target_file_path, int step)
             {
-                Exception_Tables.Clear();
+                if (step == 2)
+                    Parameters.Clear();
+                else
+                    Exception_Tables.Clear();
 
-                StreamReader sr = new StreamReader(target_file_path, Encoding.Default);
+                StreamReader sr = new StreamReader(target_file_path, Encoding.UTF8);
                 while (sr.Peek() > -1)
                 {
-                    string strLine = sr.ReadLine().Replace("\t", "");
-                    if (strLine.Substring(0, 1) == "#")
+                    string strLine = sr.ReadLine().Replace("\t", "").Trim();
+                    if (strLine == string.Empty || strLine.Substring(0, 1) == "#")
                         continue;
 
-                    string[] arrstrLine = strLine.Split('/').ToArray();
-                    Table_Info ti = new Table_Info();
-                    ti.Table_Name = arrstrLine[0].Trim();
-                    ti.Condition_Name = arrstrLine.Length > 1 ? arrstrLine[1].Trim() : string.Empty;
-                    ti.Condition_Value = arrstrLine.Length > 2 ? arrstrLine[2].Trim() : string.Empty;
-                    Exception_Tables.Add(ti);
+                    if (step == 2)
+                    {
+                        Parameter param = new Parameter();
+                        int nSplitIndex = strLine.IndexOf("/");
+                        param.Parameter_Code = strLine.Substring(0, nSplitIndex);
+                        strLine = strLine.Substring(nSplitIndex + 1, strLine.Length - (nSplitIndex + 1));
+                        nSplitIndex = strLine.IndexOf("/");
+                        param.Default_Value = strLine.Substring(0, nSplitIndex);
+                        param.Parameter_Remark = strLine.Substring(nSplitIndex + 1, strLine.Length - (nSplitIndex + 1));
+                        Parameters.Add(param);
+                    }
+                    else
+                    {
+                        string[] arrstrLine = strLine.Split('/').ToArray();
+                        Table_Info ti = new Table_Info();
+                        ti.Table_Name = arrstrLine[0].Trim();
+                        ti.Condition_Name = arrstrLine.Length > 1 ? arrstrLine[1].Trim() : string.Empty;
+                        ti.Condition_Value = arrstrLine.Length > 2 ? arrstrLine[2].Trim() : string.Empty;
+                        Exception_Tables.Add(ti);
+                    }
                 }
                 sr.Close();
                 sr.Dispose();
             }
+
+            public DataTable Get_Parameters_To_Table()
+            {
+                DataTable resultDt = new DataTable();
+                resultDt.Columns.Add(new DataColumn("parameter_code", typeof(string)));
+                resultDt.Columns.Add(new DataColumn("parameter_value", typeof(string)));
+                resultDt.Columns.Add(new DataColumn("remark", typeof(string)));
+
+                foreach (Parameter param in Parameters)
+                {
+                    DataRow dr = resultDt.NewRow();
+                    dr["parameter_code"] = param.Parameter_Code;
+                    dr["parameter_value"] = param.Default_Value;
+                    dr["remark"] = param.Parameter_Remark;
+                    resultDt.Rows.Add(dr);
+                }
+
+                return resultDt;
+            }
         }
-
-
     }
 }
