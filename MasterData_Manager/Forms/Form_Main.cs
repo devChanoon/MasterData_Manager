@@ -21,7 +21,7 @@ namespace MasterData_Manager
 
         private int m_nStep = 1;
         private string m_strStep1_Message = "[SEARCH] 버튼을 눌러 조회해 주십시오.";
-        private int m_nStep3_Unchecked_Count = 0;
+        private int m_nStep4_Unchecked_Count = 0;
 
 
         public Form_Main()
@@ -92,7 +92,7 @@ namespace MasterData_Manager
             tc_Step.SelectedTabPageIndex = m_nStep - 1;
             tc_Step.Update();
 
-            if (m_nStep != 1 && m_nStep != 4)
+            if (m_nStep != 1)
                 Search();
             else
                 Set_Message(m_strStep1_Message);
@@ -105,18 +105,18 @@ namespace MasterData_Manager
         {
             Execute();
         }
-        private void sb_Step3_CheckAll_Click(object sender, EventArgs e)
+        private void sb_Step4_CheckAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < gv_Step3.RowCount; i++)
+            for (int i = 0; i < gv_Step4.RowCount; i++)
             {
-                gv_Step3.SetRowCellValue(i, gc_step3_Check, "Y");
+                gv_Step4.SetRowCellValue(i, gc_step4_Check, "Y");
             }
         }
-        private void sb_Step3_UncheckAll_Click(object sender, EventArgs e)
+        private void sb_Step4_UncheckAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < gv_Step3.RowCount; i++)
+            for (int i = 0; i < gv_Step4.RowCount; i++)
             {
-                gv_Step3.SetRowCellValue(i, gc_step3_Check, "N");
+                gv_Step4.SetRowCellValue(i, gc_step4_Check, "N");
             }
         }
         private void cbe_ViewPassword_CheckedChanged(object sender, EventArgs e)
@@ -126,20 +126,20 @@ namespace MasterData_Manager
             else
                 tb_Password.UseSystemPasswordChar = true;
         }
-        private void r_ce_step3_Check_CheckedChanged(object sender, EventArgs e)
+        private void r_ce_step4_Check_CheckedChanged(object sender, EventArgs e)
         {
-            if (gv_Step3.GetFocusedRowCellValue(gc_step3_Check).ToString() == "N")
+            if (gv_Step4.GetFocusedRowCellValue(gc_step4_Check).ToString() == "N")
             {
-                m_nStep3_Unchecked_Count--;
-                gv_Step3.SetFocusedRowCellValue(gc_step3_Check, "Y");
+                m_nStep4_Unchecked_Count--;
+                gv_Step4.SetFocusedRowCellValue(gc_step4_Check, "Y");
             }
             else
             {
-                m_nStep3_Unchecked_Count++;
-                gv_Step3.SetFocusedRowCellValue(gc_step3_Check, "N");
+                m_nStep4_Unchecked_Count++;
+                gv_Step4.SetFocusedRowCellValue(gc_step4_Check, "N");
             }
 
-            lc_Step3_Checked_Count.Text = string.Format("{0} / {1}", gv_Step3.RowCount - m_nStep3_Unchecked_Count, gv_Step3.RowCount);
+            lc_Step4_Checked_Count.Text = string.Format("{0} / {1}", gv_Step4.RowCount - m_nStep4_Unchecked_Count, gv_Step4.RowCount);
         }
 
 
@@ -195,12 +195,11 @@ namespace MasterData_Manager
                         break;
                     case 3:
                         {
-                            _strMessage = string.Format("{0}건 조회되었습니다. 데이터를 삭제할 테이블 선택 후 [EXECUTE] 버튼을 눌러주십시오.", nRowCount);
                         }
                         break;
                     case 4:
                         {
-
+                            _strMessage = string.Format("{0}건 조회되었습니다. 데이터를 삭제할 테이블 선택 후 [EXECUTE] 버튼을 눌러주십시오.", nRowCount);
                         }
                         break;
                 }
@@ -241,14 +240,26 @@ namespace MasterData_Manager
                     strWork = "파라미터 세팅";
                     gridControl = gc_Step2;
                     break;
-                case 3:
+                case 4:
                     strWork = "테이블 세팅";
-                    gridControl = gc_Step3;
+                    gridControl = gc_Step4;
                     break;
             }
 
             Set_Log(string.Format("조회\r\n - {0}", strWork));
-            m_Bworker_Manager.RunWorkerAsync_Search(m_nStep, gridControl, m_nStep == 1 ? te_Step1_Prev_DB_Name.Text : "");
+            string search_condition = string.Empty;
+            if (m_nStep == 1)
+                search_condition = te_Step1_Prev_DB_Name.Text;
+            else if (m_nStep == 2)
+            {
+                foreach (Init_Manager.Step.Parameter param in m_Init_Manager.INIT_STEP.Parameters)
+                {
+                    search_condition += string.Format("{0}'{1}'", search_condition == string.Empty ? "" : ",", param.Parameter_Code.ToUpper());
+                }
+            }
+
+            DataTable standard_table = m_nStep == 2 ? m_Init_Manager.INIT_STEP.Get_Parameters_To_Table() : null;
+            m_Bworker_Manager.RunWorkerAsync_Search(m_nStep, gridControl, search_condition, standard_table);
             while (m_Bworker_Manager.IsBusy)
             {
                 Application.DoEvents();
@@ -266,29 +277,30 @@ namespace MasterData_Manager
                 case 2:
                     nRowCount = gv_Step2.RowCount;
                     break;
-                case 3:
-                    nRowCount = gv_Step3.RowCount;
-                    m_nStep3_Unchecked_Count = 0;
-                    for (int i = 0; i < gv_Step3.RowCount; i++)
+
+                case 4:
+                    nRowCount = gv_Step4.RowCount;
+                    m_nStep4_Unchecked_Count = 0;
+                    for (int i = 0; i < gv_Step4.RowCount; i++)
                     {
-                        for (int j = 0; j < m_Init_Manager.INIT_STEP3.Exception_Tables.Count; j++)
+                        for (int j = 0; j < m_Init_Manager.INIT_STEP.Exception_Tables.Count; j++)
                         {
-                            if (m_Init_Manager.INIT_STEP3.Exception_Tables[j].Table_Name.ToUpper() == gv_Step3.GetRowCellValue(i, gc_step3_Table_Name).ToString().ToUpper())
+                            if (m_Init_Manager.INIT_STEP.Exception_Tables[j].Table_Name.ToUpper() == gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString().ToUpper())
                             {
-                                if (m_Init_Manager.INIT_STEP3.Exception_Tables[j].Condition_Name != string.Empty)
+                                if (m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Name != string.Empty)
                                 {
-                                    gv_Step3.SetRowCellValue(i, gc_step3_Condition_Name, m_Init_Manager.INIT_STEP3.Exception_Tables[j].Condition_Name);
-                                    gv_Step3.SetRowCellValue(i, gc_step3_Condition_Value, m_Init_Manager.INIT_STEP3.Exception_Tables[j].Condition_Value);
+                                    gv_Step4.SetRowCellValue(i, gc_step4_Condition_Name, m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Name);
+                                    gv_Step4.SetRowCellValue(i, gc_step4_Condition_Value, m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Value);
                                 }
                                 else
                                 {
-                                    gv_Step3.SetRowCellValue(i, gc_step3_Check, "N");
-                                    m_nStep3_Unchecked_Count++;
+                                    gv_Step4.SetRowCellValue(i, gc_step4_Check, "N");
+                                    m_nStep4_Unchecked_Count++;
                                 }
                             }
                         }
                     }
-                    lc_Step3_Checked_Count.Text = string.Format("{0} / {1}", gv_Step3.RowCount - m_nStep3_Unchecked_Count, gv_Step3.RowCount);
+                    lc_Step4_Checked_Count.Text = string.Format("{0} / {1}", gv_Step4.RowCount - m_nStep4_Unchecked_Count, gv_Step4.RowCount);
                     break;
             }
 
@@ -319,15 +331,17 @@ namespace MasterData_Manager
                     }
                     break;
                 case 3:
+                    break;
+                case 4:
                     strWork = "테이블 세팅";
-                    for (int i = 0; i < gv_Step3.RowCount; i++)
+                    for (int i = 0; i < gv_Step4.RowCount; i++)
                     {
-                        if (gv_Step3.GetRowCellValue(i, gc_step3_Check).ToString() == "Y")
+                        if (gv_Step4.GetRowCellValue(i, gc_step4_Check).ToString() == "Y")
                         {
                             string[] param = new string[3];
-                            param[0] = gv_Step3.GetRowCellValue(i, gc_step3_Table_Name).ToString();
-                            param[1] = gv_Step3.GetRowCellValue(i, gc_step3_Condition_Name).ToString();
-                            param[2] = gv_Step3.GetRowCellValue(i, gc_step3_Condition_Value).ToString();
+                            param[0] = gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString();
+                            param[1] = gv_Step4.GetRowCellValue(i, gc_step4_Condition_Name).ToString();
+                            param[2] = gv_Step4.GetRowCellValue(i, gc_step4_Condition_Value).ToString();
                             lstParameters.Add(param);
                         }
                     }
@@ -346,7 +360,7 @@ namespace MasterData_Manager
             int nUpdatedRowCount = m_Bworker_Manager.UpdatedRowCount;
             if (nUpdatedRowCount > 0)
             {
-                if (m_nStep == 2)
+                if (m_nStep == 2 || m_nStep == 3)
                     Set_Message(string.Format("{0}건 저장되었습니다. 다음 단계를 진행해주십시오.", nUpdatedRowCount));
                 else
                     Set_Message(string.Format("{0}건 삭제 되었습니다. 다시 [EXECUTE] 버튼을 눌러주십시오.", nUpdatedRowCount));

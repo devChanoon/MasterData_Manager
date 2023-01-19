@@ -57,12 +57,12 @@ namespace MasterData_Manager
                     result_data = ExecuteSql(DataType.dataTable_type, Get_Step1_Query(arrstrParam[0]));
                     break;
                 case 2:
-                    result_data = ExecuteSql(DataType.dataTable_type, Get_Step2_Query());
+                    result_data = ExecuteSql(DataType.dataTable_type, Get_Step2_Query(arrstrParam));
                     break;
                 case 3:
-                    result_data = ExecuteSql(DataType.dataTable_type, Get_Step3_Query());
                     break;
                 case 4:
+                    result_data = ExecuteSql(DataType.dataTable_type, Get_Step4_Query());
                     break;
             }
 
@@ -80,9 +80,9 @@ namespace MasterData_Manager
                     result_data = ExecuteSql(DataType.string_type, Get_Step2_Query(arrstrParam, false));
                     break;
                 case 3:
-                    result_data = ExecuteSql(DataType.string_type, Get_Step3_Query(arrstrParam, false));
                     break;
                 case 4:
+                    result_data = ExecuteSql(DataType.string_type, Get_Step4_Query(arrstrParam, false));
                     break;
             }
 
@@ -146,124 +146,24 @@ ORDER BY OBJECT_NAME(object_id)
             if (bSearch)
             {
                 strQuery = @"
-CREATE TABLE #TEMP (parameter_code nvarchar(50), parameter_value nvarchar(50), remark nvarchar(200))
-DECLARE @parameter_code nvarchar(50) = ''
 DECLARE @plant_cd nvarchar(50) = ''
-
 SELECT @plant_cd = plant_cd
   FROM plant
  WHERE main_yn = 'Y'
 
-SET @parameter_code = 'project'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', '프로젝트 수행 업체')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'CompanyName_In_Label'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', '라벨 내 표시되는 회사명')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'Process_Transfer_YN'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', '공정(반제품)간 인수인계 여부 (Y :  사용,  N : 미사용)')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'ReceiveField_Use_YN'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', '자재불출 현장프로그램 사용 여부 ( ReceiveField ) / Y:사용, N:미사용 - 미사용시 공정실적등록 메뉴에서 포장 자재 추가 불출')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'MasterData_AutoNumbering'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', '마스터데이터 코드 자동 채번 여부 (Y - 자동채번 / N - 수동채번)  ( 부서 / 사원 / 작업실 / 설비 / 원료 / 자재 / 제조제품 / 제품 )')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'Use_MES'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', 'MES 현장프로그램 사용여부  (사용 : Y / 미사용 : N)')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
-
-SET @parameter_code = 'CHECK_CASE_SENSITIVE'
-IF NOT EXISTS (select * from parameter where parameter_code = @parameter_code and sys_plant_cd = @plant_cd)
-BEGIN
-    INSERT INTO #TEMP
-         VALUES (@parameter_code, '', 'Y  :: 로그인 시 ID의 대소문자 구분  N :: 로그인 시 ID의 대소문자를 구분하지 않음')
-END
-ELSE
-BEGIN    
-    INSERT INTO #TEMP
-         SELECT parameter_code, parameter_value, parameter_remark
-           FROM parameter 
-          WHERE parameter_code = @parameter_code
-            AND sys_plant_cd = @plant_cd
-END
+CREATE TABLE #TEMP (parameter_code nvarchar(50), parameter_value nvarchar(50), remark nvarchar(200))
+INSERT INTO #TEMP (parameter_code, parameter_value, remark)
+SELECT parameter_code, parameter_value, parameter_remark
+  FROM parameter
+ WHERE UPPER(parameter_code) in (@PARAMETER)
+   AND sys_plant_cd = @plant_cd
 
 SELECT *
   FROM #TEMP
 
 DROP TABLE #TEMP
 ";
+                strQuery = strQuery.Replace("@PARAMETER", param[0]);
             }
             else
             {
@@ -296,7 +196,7 @@ SELECT @@ROWCOUNT
             return strQuery;
         }
 
-        private string Get_Step3_Query(string[] param = null, bool bSearch = true)
+        private string Get_Step4_Query(string[] param = null, bool bSearch = true)
         {
             string strQuery = string.Empty;
             if (bSearch)
@@ -312,15 +212,15 @@ ORDER BY TABLE_NAME
             {
                 strQuery = @"
 DELETE @TABLE_NAME
-DBCC CHECKIDENT(@TABLE_NAME, RESEED, 0)
 ";
-                strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
                 if (param[1] != string.Empty)
                 {
                     strQuery = string.Format("{0}WHERE @CONDITION_NAME NOT IN (@CONDITION_VALUE)", strQuery);
                     strQuery = strQuery.Replace("@CONDITION_NAME", param[1]);
                     strQuery = strQuery.Replace("@CONDITION_VALUE", param[2]);
                 }
+                strQuery = string.Format("{0}\r\nDBCC CHECKIDENT(@TABLE_NAME, RESEED, 0)", strQuery);
+                strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
                 strQuery = string.Format("{0}\r\n\r\nSELECT @@ROWCOUNT", strQuery);
             }
             return strQuery;

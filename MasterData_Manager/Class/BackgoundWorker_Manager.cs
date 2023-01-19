@@ -24,6 +24,7 @@ namespace MasterData_Manager
         private int mStep = 0;
         private GridControl mGridControl = null;
         private List<string[]> mParameters = null;
+        private DataTable mStandard_Table = null;
 
         private work_type mWork_Type = work_type.NONE;
 
@@ -64,7 +65,7 @@ namespace MasterData_Manager
         {
             if (mWork_Type == work_type.SEARCH)
             {
-                if (mStep == 1)
+                if (mStep == 1 || mStep == 2)
                     mResult_DataTable = mSql_Manager.Sql_Execute_Search(mStep, mParameters[0][0]);
                 else
                     mResult_DataTable = mSql_Manager.Sql_Execute_Search(mStep);
@@ -90,14 +91,35 @@ namespace MasterData_Manager
         {
             if (mWork_Type == work_type.SEARCH)
             {
-                mGridControl.DataSource = mResult_DataTable;
+                if (mStep == 2)
+                {
+                    foreach (DataRow dr in mResult_DataTable.Rows)
+                    {
+                        string parameter_code = dr["parameter_code"].ToString().ToUpper();
+                        for (int i = 0; i < mStandard_Table.Rows.Count; i++)
+                        {
+                            if (mStandard_Table.Rows[i]["parameter_code"].ToString().ToUpper() == parameter_code)
+                            {
+                                mStandard_Table.Rows[i]["parameter_value"] = dr["parameter_value"];
+                                mStandard_Table.Rows[i]["remark"] = dr["remark"];
+                                break;
+                            }
+                        }
+                    }
+
+                    mResult_DataTable = mStandard_Table;
+                }
+
+                if (mGridControl != null)
+                    mGridControl.DataSource = mResult_DataTable;
                 mResult_DataTable = null;
+                mStandard_Table = null;
             }
 
             mWork_Type = work_type.NONE;
         }
 
-        public void RunWorkerAsync_Search(int step, GridControl target, string search_parameter = "")
+        public void RunWorkerAsync_Search(int step, GridControl target, string search_parameter = "", DataTable standard_table = null)
         {
             mWork_Type = work_type.SEARCH;
 
@@ -105,6 +127,7 @@ namespace MasterData_Manager
             mGridControl = target;
             mParameters = new List<string[]>();
             mParameters.Add(new string[] { search_parameter });
+            mStandard_Table = standard_table;
 
             mBackgroundWorker.RunWorkerAsync();
         }
