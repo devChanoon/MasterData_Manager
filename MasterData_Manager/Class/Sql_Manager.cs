@@ -221,6 +221,10 @@ DELETE @TABLE_NAME
                 }
                 strQuery = string.Format("{0}\r\nDBCC CHECKIDENT(@TABLE_NAME, RESEED, 0)", strQuery);
                 strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
+
+                strQuery = string.Format("{0}\r\nDBCC CHECKIDENT(@TABLE_NAME, RESEED)", strQuery);
+                strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
+
                 strQuery = string.Format("{0}\r\n\r\nSELECT @@ROWCOUNT", strQuery);
             }
             return strQuery;
