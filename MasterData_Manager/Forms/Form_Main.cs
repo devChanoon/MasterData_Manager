@@ -193,10 +193,6 @@ namespace MasterData_Manager
                             _strMessage = string.Format("{0}건 조회되었습니다. 설정 완료 후 저장 해주십시오.", nRowCount);
                         }
                         break;
-                    case 3:
-                        {
-                        }
-                        break;
                     case 4:
                         {
                             _strMessage = string.Format("{0}건 조회되었습니다. 데이터를 삭제할 테이블 선택 후 [EXECUTE] 버튼을 눌러주십시오.", nRowCount);
@@ -258,7 +254,7 @@ namespace MasterData_Manager
                 }
             }
 
-            DataTable standard_table = m_nStep == 2 ? m_Init_Manager.INIT_STEP.Get_Parameters_To_Table() : null;
+            DataTable standard_table = m_nStep == 2 ? m_Init_Manager.INIT_STEP.GetParametersToTable() : null;
             m_Bworker_Manager.RunWorkerAsync_Search(m_nStep, gridControl, search_condition, standard_table);
             while (m_Bworker_Manager.IsBusy)
             {
@@ -283,20 +279,18 @@ namespace MasterData_Manager
                     m_nStep4_Unchecked_Count = 0;
                     for (int i = 0; i < gv_Step4.RowCount; i++)
                     {
-                        for (int j = 0; j < m_Init_Manager.INIT_STEP.Exception_Tables.Count; j++)
-                        {
-                            if (m_Init_Manager.INIT_STEP.Exception_Tables[j].Table_Name.ToUpper() == gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString().ToUpper())
+                        Tuple<bool, string, string> tuple = m_Init_Manager.INIT_STEP.GetExceptionConditionToString(gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString());
+                        if (tuple.Item1)
+                        { 
+                            if(tuple.Item2 != string.Empty)
                             {
-                                if (m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Name != string.Empty)
-                                {
-                                    gv_Step4.SetRowCellValue(i, gc_step4_Condition_Name, m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Name);
-                                    gv_Step4.SetRowCellValue(i, gc_step4_Condition_Value, m_Init_Manager.INIT_STEP.Exception_Tables[j].Condition_Value);
-                                }
-                                else
-                                {
-                                    gv_Step4.SetRowCellValue(i, gc_step4_Check, "N");
-                                    m_nStep4_Unchecked_Count++;
-                                }
+                                gv_Step4.SetRowCellValue(i, gc_step4_Condition_Name, tuple.Item2);
+                                gv_Step4.SetRowCellValue(i, gc_step4_Condition_Value, tuple.Item3);
+                            }
+                            else
+                            {
+                                gv_Step4.SetRowCellValue(i, gc_step4_Check, "N");
+                                m_nStep4_Unchecked_Count++;
                             }
                         }
                     }
@@ -338,11 +332,7 @@ namespace MasterData_Manager
                     {
                         if (gv_Step4.GetRowCellValue(i, gc_step4_Check).ToString() == "Y")
                         {
-                            string[] param = new string[3];
-                            param[0] = gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString();
-                            param[1] = gv_Step4.GetRowCellValue(i, gc_step4_Condition_Name).ToString();
-                            param[2] = gv_Step4.GetRowCellValue(i, gc_step4_Condition_Value).ToString();
-                            lstParameters.Add(param);
+                            lstParameters.Add(m_Init_Manager.INIT_STEP.GetExceptionCondition(gv_Step4.GetRowCellValue(i, gc_step4_Table_Name).ToString()));
                         }
                     }
                     break;

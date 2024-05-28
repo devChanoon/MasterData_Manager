@@ -26,7 +26,7 @@ namespace MasterData_Manager
                 }
                 else if (files[i].Name.ToUpper().Contains("STEP"))
                 {   
-                    INIT_STEP.Initialize_Step(files[i].FullName, files[i].Name.ToUpper().Contains("STEP2") ? 2 : 3);
+                    INIT_STEP.InitializeStep(files[i].FullName, files[i].Name.ToUpper().Contains("STEP2") ? 2 : 3);
                 }
             }
         }
@@ -41,25 +41,13 @@ namespace MasterData_Manager
 
             public string ID
             {
-                get
-                {
-                    return Decrypt(mEncrypt_ID, "ZR");
-                }
-                set
-                {
-                    mEncrypt_ID = Encrypt(value, "ZR");
-                }
+                get { return Decrypt(mEncrypt_ID, "ZR"); }
+                set { mEncrypt_ID = Encrypt(value, "ZR"); }
             }
             public string Password 
             {
-                get 
-                { 
-                    return Decrypt(mEncrypt_Password, "ZR"); 
-                }
-                set 
-                {
-                    mEncrypt_Password = Encrypt(value, "ZR"); 
-                } 
+                get { return Decrypt(mEncrypt_Password, "ZR"); }
+                set { mEncrypt_Password = Encrypt(value, "ZR"); } 
             }
 
             private string Decrypt(string cipherText, string Password)
@@ -236,70 +224,123 @@ namespace MasterData_Manager
                 public string Parameter_Remark;
             }
 
-            public List<Table_Info> Exception_Tables = new List<Table_Info>();
-            public struct Table_Info
+            public Dictionary<string, List<ConditionInfo>> ExceptionConditions = new Dictionary<string, List<ConditionInfo>>();
+            public struct ConditionInfo
             {
-                public string Table_Name;
-                public string Condition_Name;
-                public string Condition_Value;
+                public string Name;
+                public string Value;
             }
 
-            public void Initialize_Step(string target_file_path, int step)
+            public void InitializeStep(string target_file_path, int step)
             {
                 if (step == 2)
                     Parameters.Clear();
                 else
-                    Exception_Tables.Clear();
+                    ExceptionConditions.Clear();
 
                 StreamReader sr = new StreamReader(target_file_path, Encoding.UTF8);
                 while (sr.Peek() > -1)
                 {
-                    string strLine = sr.ReadLine().Replace("\t", "").Trim();
-                    if (strLine == string.Empty || strLine.Substring(0, 1) == "#")
+                    string content = sr.ReadLine().Replace("\t", "").Trim();
+                    if (content == string.Empty || content.Substring(0, 1) == "#")
                         continue;
 
                     if (step == 2)
-                    {
-                        Parameter param = new Parameter();
-                        int nSplitIndex = strLine.IndexOf("/");
-                        param.Parameter_Code = strLine.Substring(0, nSplitIndex);
-                        strLine = strLine.Substring(nSplitIndex + 1, strLine.Length - (nSplitIndex + 1));
-                        nSplitIndex = strLine.IndexOf("/");
-                        param.Default_Value = strLine.Substring(0, nSplitIndex);
-                        param.Parameter_Remark = strLine.Substring(nSplitIndex + 1, strLine.Length - (nSplitIndex + 1));
-                        Parameters.Add(param);
-                    }
+                        AddParameters(content);
                     else
-                    {
-                        string[] arrstrLine = strLine.Split('/').ToArray();
-                        Table_Info ti = new Table_Info();
-                        ti.Table_Name = arrstrLine[0].Trim();
-                        ti.Condition_Name = arrstrLine.Length > 1 ? arrstrLine[1].Trim() : string.Empty;
-                        ti.Condition_Value = arrstrLine.Length > 2 ? arrstrLine[2].Trim() : string.Empty;
-                        Exception_Tables.Add(ti);
-                    }
+                        AddExceptionConditions(content);
                 }
                 sr.Close();
                 sr.Dispose();
             }
 
-            public DataTable Get_Parameters_To_Table()
+            private void AddExceptionConditions(string content)
+            {
+                string[] contents = content.Split('/').ToArray();
+                string tableName = contents[0].Trim().ToUpper();
+                ConditionInfo conditionInfo = new ConditionInfo()
+                {
+                    Name = contents.Length > 1 ? contents[1].Trim() : string.Empty,
+                    Value = contents.Length > 2 ? contents[2].Trim() : string.Empty
+                };
+                if (ExceptionConditions.ContainsKey(tableName))
+                { 
+                    if (!ExceptionConditions[tableName].Contains(conditionInfo))
+                        ExceptionConditions[tableName].Add(conditionInfo);
+                }
+                else
+                    ExceptionConditions.Add(tableName, new List<ConditionInfo>() { conditionInfo });
+            }
+
+            private void AddParameters(string content)
+            {
+                Parameter parameter = new Parameter();
+                int splitIndex = content.IndexOf("/");
+                parameter.Parameter_Code = content.Substring(0, splitIndex);
+
+                string parameterString = content.Substring(splitIndex + 1, content.Length - (splitIndex + 1));
+                splitIndex = parameterString.IndexOf("/");
+                parameter.Default_Value = parameterString.Substring(0, splitIndex);
+                parameter.Parameter_Remark = parameterString.Substring(splitIndex + 1, parameterString.Length - (splitIndex + 1));
+                Parameters.Add(parameter);
+            }
+
+            public DataTable GetParametersToTable()
             {
                 DataTable resultDt = new DataTable();
                 resultDt.Columns.Add(new DataColumn("parameter_code", typeof(string)));
                 resultDt.Columns.Add(new DataColumn("parameter_value", typeof(string)));
                 resultDt.Columns.Add(new DataColumn("remark", typeof(string)));
 
-                foreach (Parameter param in Parameters)
+                foreach (Parameter parameter in Parameters)
                 {
                     DataRow dr = resultDt.NewRow();
-                    dr["parameter_code"] = param.Parameter_Code;
-                    dr["parameter_value"] = param.Default_Value;
-                    dr["remark"] = param.Parameter_Remark;
+                    dr["parameter_code"] = parameter.Parameter_Code;
+                    dr["parameter_value"] = parameter.Default_Value;
+                    dr["remark"] = parameter.Parameter_Remark;
                     resultDt.Rows.Add(dr);
                 }
 
                 return resultDt;
+            }
+
+            public Tuple<bool, string, string> GetExceptionConditionToString(string tableName)
+            {
+                string conditionName = string.Empty;
+                string conditionValue = string.Empty;
+                string tableNameUpper = tableName.ToUpper();
+                bool isExceptionTable = ExceptionConditions.ContainsKey(tableNameUpper.ToUpper());
+                if (isExceptionTable)
+                {
+                    const string SPLIT = " / ";
+                    List<ConditionInfo> conditionInfos = ExceptionConditions[tableNameUpper];
+                    foreach (ConditionInfo conditionInfo in conditionInfos)
+                    {
+                        conditionName += $"{conditionInfo.Name}{SPLIT}";
+                        conditionValue += $"{conditionInfo.Value}{SPLIT}";
+                    }
+
+                    conditionName = conditionName.Substring(0, conditionName.Length - SPLIT.Length);
+                    conditionValue = conditionValue.Substring(0, conditionValue.Length - SPLIT.Length);
+                }
+
+                return new Tuple<bool, string, string>(isExceptionTable, conditionName, conditionValue);
+            }
+
+            public string[] GetExceptionCondition(string tableName)
+            {
+                List<string> conditionList = new List<string>() { tableName };
+                string tableNameUpper = tableName.ToUpper();
+                if (ExceptionConditions.ContainsKey(tableNameUpper))
+                {
+                    List<ConditionInfo> conditionInfos = ExceptionConditions[tableNameUpper];
+                    foreach (ConditionInfo conditionInfo in conditionInfos)
+                    {
+                        conditionList.Add($"{conditionInfo.Name}/{conditionInfo.Value}");
+                    }
+                }
+
+                return conditionList.ToArray();
             }
         }
     }
