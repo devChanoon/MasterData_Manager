@@ -210,22 +210,24 @@ ORDER BY TABLE_NAME
             }
             else
             {
-                strQuery = @"
-DELETE @TABLE_NAME
-";
-                if (param[1] != string.Empty)
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"DELETE {param[0]}");
+                if (param.Length > 1)
                 {
-                    strQuery = string.Format("{0}WHERE @CONDITION_NAME NOT IN (@CONDITION_VALUE)", strQuery);
-                    strQuery = strQuery.Replace("@CONDITION_NAME", param[1]);
-                    strQuery = strQuery.Replace("@CONDITION_VALUE", param[2]);
+                    stringBuilder.AppendLine("WHERE NOT (");
+                    for (int i = 1; i < param.Length; i++)
+                    {
+                        string name = param[i].Split('/')[0];
+                        string value = param[i].Split('/')[1];
+                        stringBuilder.AppendLine($"{(i == 1 ? string.Empty : "AND ")} {name} IN ({value})");
+                    }
+                    stringBuilder.AppendLine(")");
                 }
-                strQuery = string.Format("{0}\r\nDBCC CHECKIDENT(@TABLE_NAME, RESEED, 0)", strQuery);
-                strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
+                stringBuilder.AppendLine($"DBCC CHECKIDENT({param[0]}, RESEED, 0)");
+                stringBuilder.AppendLine($"DBCC CHECKIDENT({param[0]}, RESEED)");
+                stringBuilder.AppendLine("SELECT @@ROWCOUNT");
 
-                strQuery = string.Format("{0}\r\nDBCC CHECKIDENT(@TABLE_NAME, RESEED)", strQuery);
-                strQuery = strQuery.Replace("@TABLE_NAME", param[0]);
-
-                strQuery = string.Format("{0}\r\n\r\nSELECT @@ROWCOUNT", strQuery);
+                strQuery = stringBuilder.ToString();
             }
             return strQuery;
         }
