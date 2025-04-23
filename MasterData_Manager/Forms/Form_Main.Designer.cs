@@ -65,6 +65,14 @@
             this.sb_Step2_Search = new DevExpress.XtraEditors.SimpleButton();
             this.sb_Step2_Save = new DevExpress.XtraEditors.SimpleButton();
             this.tp_Step3 = new DevExpress.XtraTab.XtraTabPage();
+            this.gc_Step3 = new DevExpress.XtraGrid.GridControl();
+            this.gv_Step3 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.pnl_Step3_Top = new System.Windows.Forms.Panel();
+            this.sb_Step3_Search = new DevExpress.XtraEditors.SimpleButton();
+            this.sb_Step3_Save = new DevExpress.XtraEditors.SimpleButton();
             this.tp_Step4 = new DevExpress.XtraTab.XtraTabPage();
             this.gc_Step4 = new DevExpress.XtraGrid.GridControl();
             this.gv_Step4 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -88,14 +96,6 @@
             this.cb_Step3 = new DevExpress.XtraEditors.CheckButton();
             this.cb_Step2 = new DevExpress.XtraEditors.CheckButton();
             this.cb_Step1 = new DevExpress.XtraEditors.CheckButton();
-            this.pnl_Step3_Top = new System.Windows.Forms.Panel();
-            this.sb_Step3_Search = new DevExpress.XtraEditors.SimpleButton();
-            this.sb_Step3_Save = new DevExpress.XtraEditors.SimpleButton();
-            this.gc_Step3 = new DevExpress.XtraGrid.GridControl();
-            this.gv_Step3 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tlp_Main.SuspendLayout();
@@ -111,6 +111,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gv_Step2)).BeginInit();
             this.pnl_Step2_Top.SuspendLayout();
             this.tp_Step3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gc_Step3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gv_Step3)).BeginInit();
+            this.pnl_Step3_Top.SuspendLayout();
             this.tp_Step4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gc_Step4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Step4)).BeginInit();
@@ -119,9 +122,6 @@
             this.tlp_Step4_Checked_Count.SuspendLayout();
             this.tlp_Step.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.styleController1)).BeginInit();
-            this.pnl_Step3_Top.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gc_Step3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gv_Step3)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -151,7 +151,6 @@
             this.tb_Password.Name = "tb_Password";
             this.tb_Password.Size = new System.Drawing.Size(193, 23);
             this.tb_Password.TabIndex = 3;
-            this.tb_Password.Text = "!1Tascorp";
             this.tb_Password.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_Password.UseSystemPasswordChar = true;
             this.tb_Password.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DB_Information_KeyDown);
@@ -162,7 +161,6 @@
             this.tb_DBName.Name = "tb_DBName";
             this.tb_DBName.Size = new System.Drawing.Size(220, 23);
             this.tb_DBName.TabIndex = 1;
-            this.tb_DBName.Text = "RTEGMS_NATUREFARM";
             this.tb_DBName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_DBName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DB_Information_KeyDown);
             // 
@@ -172,7 +170,6 @@
             this.tb_ID.Name = "tb_ID";
             this.tb_ID.Size = new System.Drawing.Size(238, 23);
             this.tb_ID.TabIndex = 2;
-            this.tb_ID.Text = "sa";
             this.tb_ID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_ID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DB_Information_KeyDown);
             // 
@@ -182,7 +179,6 @@
             this.tb_DBAddress.Name = "tb_DBAddress";
             this.tb_DBAddress.Size = new System.Drawing.Size(238, 23);
             this.tb_DBAddress.TabIndex = 0;
-            this.tb_DBAddress.Text = "sf.tascorp.co.kr";
             this.tb_DBAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_DBAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DB_Information_KeyDown);
             // 
@@ -616,6 +612,148 @@
             this.tp_Step3.Size = new System.Drawing.Size(680, 521);
             this.tp_Step3.Text = "tp_Step3";
             // 
+            // gc_Step3
+            // 
+            this.gc_Step3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gc_Step3.Location = new System.Drawing.Point(0, 44);
+            this.gc_Step3.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.gc_Step3.MainView = this.gv_Step3;
+            this.gc_Step3.Name = "gc_Step3";
+            this.gc_Step3.Size = new System.Drawing.Size(680, 477);
+            this.gc_Step3.TabIndex = 4;
+            this.gc_Step3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gv_Step3});
+            // 
+            // gv_Step3
+            // 
+            this.gv_Step3.Appearance.EvenRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(233)))), ((int)(((byte)(242)))));
+            this.gv_Step3.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gv_Step3.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
+            this.gv_Step3.Appearance.FocusedCell.ForeColor = System.Drawing.Color.White;
+            this.gv_Step3.Appearance.FocusedCell.Options.UseBackColor = true;
+            this.gv_Step3.Appearance.FocusedCell.Options.UseForeColor = true;
+            this.gv_Step3.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
+            this.gv_Step3.Appearance.FocusedRow.ForeColor = System.Drawing.Color.White;
+            this.gv_Step3.Appearance.FocusedRow.Options.UseBackColor = true;
+            this.gv_Step3.Appearance.FocusedRow.Options.UseForeColor = true;
+            this.gv_Step3.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
+            this.gv_Step3.Appearance.HideSelectionRow.ForeColor = System.Drawing.Color.White;
+            this.gv_Step3.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            this.gv_Step3.Appearance.HideSelectionRow.Options.UseForeColor = true;
+            this.gv_Step3.Appearance.Row.ForeColor = System.Drawing.Color.Black;
+            this.gv_Step3.Appearance.Row.Options.UseForeColor = true;
+            this.gv_Step3.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
+            this.gv_Step3.Appearance.SelectedRow.ForeColor = System.Drawing.Color.White;
+            this.gv_Step3.Appearance.SelectedRow.Options.UseBackColor = true;
+            this.gv_Step3.Appearance.SelectedRow.Options.UseForeColor = true;
+            this.gv_Step3.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn1,
+            this.gridColumn2,
+            this.gridColumn3});
+            this.gv_Step3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+            this.gv_Step3.GridControl = this.gc_Step3;
+            this.gv_Step3.Name = "gv_Step3";
+            this.gv_Step3.OptionsView.EnableAppearanceEvenRow = true;
+            this.gv_Step3.OptionsView.ShowGroupPanel = false;
+            this.gv_Step3.OptionsView.ShowIndicator = false;
+            this.gv_Step3.RowHeight = 25;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumn1.AppearanceCell.Options.UseFont = true;
+            this.gridColumn1.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumn1.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
+            this.gridColumn1.AppearanceHeader.Options.UseFont = true;
+            this.gridColumn1.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumn1.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn1.Caption = "파라미터 코드";
+            this.gridColumn1.FieldName = "parameter_code";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.OptionsColumn.AllowFocus = false;
+            this.gridColumn1.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn1.OptionsFilter.AllowFilter = false;
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.Width = 189;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumn2.AppearanceCell.Options.UseFont = true;
+            this.gridColumn2.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumn2.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
+            this.gridColumn2.AppearanceHeader.Options.UseFont = true;
+            this.gridColumn2.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumn2.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn2.Caption = "파라미터 값";
+            this.gridColumn2.FieldName = "parameter_value";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn2.OptionsFilter.AllowFilter = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 132;
+            // 
+            // gridColumn3
+            // 
+            this.gridColumn3.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gridColumn3.AppearanceCell.Options.UseFont = true;
+            this.gridColumn3.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gridColumn3.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
+            this.gridColumn3.AppearanceHeader.Options.UseFont = true;
+            this.gridColumn3.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn3.Caption = "설명";
+            this.gridColumn3.FieldName = "remark";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
+            this.gridColumn3.OptionsColumn.AllowFocus = false;
+            this.gridColumn3.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn3.OptionsFilter.AllowFilter = false;
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 357;
+            // 
+            // pnl_Step3_Top
+            // 
+            this.pnl_Step3_Top.BackColor = System.Drawing.Color.White;
+            this.pnl_Step3_Top.Controls.Add(this.sb_Step3_Search);
+            this.pnl_Step3_Top.Controls.Add(this.sb_Step3_Save);
+            this.pnl_Step3_Top.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnl_Step3_Top.Location = new System.Drawing.Point(0, 0);
+            this.pnl_Step3_Top.Name = "pnl_Step3_Top";
+            this.pnl_Step3_Top.Size = new System.Drawing.Size(680, 44);
+            this.pnl_Step3_Top.TabIndex = 3;
+            // 
+            // sb_Step3_Search
+            // 
+            this.sb_Step3_Search.Appearance.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sb_Step3_Search.Appearance.Options.UseFont = true;
+            this.sb_Step3_Search.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.sb_Step3_Search.Location = new System.Drawing.Point(551, 5);
+            this.sb_Step3_Search.Name = "sb_Step3_Search";
+            this.sb_Step3_Search.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.sb_Step3_Search.Size = new System.Drawing.Size(124, 34);
+            this.sb_Step3_Search.TabIndex = 7;
+            this.sb_Step3_Search.Text = "SEARCH";
+            // 
+            // sb_Step3_Save
+            // 
+            this.sb_Step3_Save.Appearance.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sb_Step3_Save.Appearance.Options.UseFont = true;
+            this.sb_Step3_Save.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.sb_Step3_Save.Location = new System.Drawing.Point(423, 5);
+            this.sb_Step3_Save.Name = "sb_Step3_Save";
+            this.sb_Step3_Save.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.sb_Step3_Save.Size = new System.Drawing.Size(124, 34);
+            this.sb_Step3_Save.TabIndex = 6;
+            this.sb_Step3_Save.Text = "SAVE";
+            // 
             // tp_Step4
             // 
             this.tp_Step4.Controls.Add(this.gc_Step4);
@@ -997,148 +1135,6 @@
             this.cb_Step1.Text = "1. 기존 DB Name 조회";
             this.cb_Step1.Click += new System.EventHandler(this.cb_Step_Click);
             // 
-            // pnl_Step3_Top
-            // 
-            this.pnl_Step3_Top.BackColor = System.Drawing.Color.White;
-            this.pnl_Step3_Top.Controls.Add(this.sb_Step3_Search);
-            this.pnl_Step3_Top.Controls.Add(this.sb_Step3_Save);
-            this.pnl_Step3_Top.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_Step3_Top.Location = new System.Drawing.Point(0, 0);
-            this.pnl_Step3_Top.Name = "pnl_Step3_Top";
-            this.pnl_Step3_Top.Size = new System.Drawing.Size(680, 44);
-            this.pnl_Step3_Top.TabIndex = 3;
-            // 
-            // sb_Step3_Search
-            // 
-            this.sb_Step3_Search.Appearance.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sb_Step3_Search.Appearance.Options.UseFont = true;
-            this.sb_Step3_Search.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.sb_Step3_Search.Location = new System.Drawing.Point(551, 5);
-            this.sb_Step3_Search.Name = "sb_Step3_Search";
-            this.sb_Step3_Search.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.sb_Step3_Search.Size = new System.Drawing.Size(124, 34);
-            this.sb_Step3_Search.TabIndex = 7;
-            this.sb_Step3_Search.Text = "SEARCH";
-            // 
-            // sb_Step3_Save
-            // 
-            this.sb_Step3_Save.Appearance.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sb_Step3_Save.Appearance.Options.UseFont = true;
-            this.sb_Step3_Save.ImageOptions.Location = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.sb_Step3_Save.Location = new System.Drawing.Point(423, 5);
-            this.sb_Step3_Save.Name = "sb_Step3_Save";
-            this.sb_Step3_Save.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.sb_Step3_Save.Size = new System.Drawing.Size(124, 34);
-            this.sb_Step3_Save.TabIndex = 6;
-            this.sb_Step3_Save.Text = "SAVE";
-            // 
-            // gc_Step3
-            // 
-            this.gc_Step3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gc_Step3.Location = new System.Drawing.Point(0, 44);
-            this.gc_Step3.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.gc_Step3.MainView = this.gv_Step3;
-            this.gc_Step3.Name = "gc_Step3";
-            this.gc_Step3.Size = new System.Drawing.Size(680, 477);
-            this.gc_Step3.TabIndex = 4;
-            this.gc_Step3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gv_Step3});
-            // 
-            // gv_Step3
-            // 
-            this.gv_Step3.Appearance.EvenRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(233)))), ((int)(((byte)(242)))));
-            this.gv_Step3.Appearance.EvenRow.Options.UseBackColor = true;
-            this.gv_Step3.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
-            this.gv_Step3.Appearance.FocusedCell.ForeColor = System.Drawing.Color.White;
-            this.gv_Step3.Appearance.FocusedCell.Options.UseBackColor = true;
-            this.gv_Step3.Appearance.FocusedCell.Options.UseForeColor = true;
-            this.gv_Step3.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
-            this.gv_Step3.Appearance.FocusedRow.ForeColor = System.Drawing.Color.White;
-            this.gv_Step3.Appearance.FocusedRow.Options.UseBackColor = true;
-            this.gv_Step3.Appearance.FocusedRow.Options.UseForeColor = true;
-            this.gv_Step3.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
-            this.gv_Step3.Appearance.HideSelectionRow.ForeColor = System.Drawing.Color.White;
-            this.gv_Step3.Appearance.HideSelectionRow.Options.UseBackColor = true;
-            this.gv_Step3.Appearance.HideSelectionRow.Options.UseForeColor = true;
-            this.gv_Step3.Appearance.Row.ForeColor = System.Drawing.Color.Black;
-            this.gv_Step3.Appearance.Row.Options.UseForeColor = true;
-            this.gv_Step3.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(66)))), ((int)(((byte)(92)))));
-            this.gv_Step3.Appearance.SelectedRow.ForeColor = System.Drawing.Color.White;
-            this.gv_Step3.Appearance.SelectedRow.Options.UseBackColor = true;
-            this.gv_Step3.Appearance.SelectedRow.Options.UseForeColor = true;
-            this.gv_Step3.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn1,
-            this.gridColumn2,
-            this.gridColumn3});
-            this.gv_Step3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-            this.gv_Step3.GridControl = this.gc_Step3;
-            this.gv_Step3.Name = "gv_Step3";
-            this.gv_Step3.OptionsView.EnableAppearanceEvenRow = true;
-            this.gv_Step3.OptionsView.ShowGroupPanel = false;
-            this.gv_Step3.OptionsView.ShowIndicator = false;
-            this.gv_Step3.RowHeight = 25;
-            // 
-            // gridColumn1
-            // 
-            this.gridColumn1.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gridColumn1.AppearanceCell.Options.UseFont = true;
-            this.gridColumn1.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gridColumn1.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
-            this.gridColumn1.AppearanceHeader.Options.UseFont = true;
-            this.gridColumn1.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumn1.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn1.Caption = "파라미터 코드";
-            this.gridColumn1.FieldName = "parameter_code";
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.OptionsColumn.AllowEdit = false;
-            this.gridColumn1.OptionsColumn.AllowFocus = false;
-            this.gridColumn1.OptionsFilter.AllowAutoFilter = false;
-            this.gridColumn1.OptionsFilter.AllowFilter = false;
-            this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 189;
-            // 
-            // gridColumn2
-            // 
-            this.gridColumn2.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gridColumn2.AppearanceCell.Options.UseFont = true;
-            this.gridColumn2.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gridColumn2.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
-            this.gridColumn2.AppearanceHeader.Options.UseFont = true;
-            this.gridColumn2.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumn2.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn2.Caption = "파라미터 값";
-            this.gridColumn2.FieldName = "parameter_value";
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsFilter.AllowAutoFilter = false;
-            this.gridColumn2.OptionsFilter.AllowFilter = false;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 132;
-            // 
-            // gridColumn3
-            // 
-            this.gridColumn3.AppearanceCell.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.gridColumn3.AppearanceCell.Options.UseFont = true;
-            this.gridColumn3.AppearanceHeader.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.gridColumn3.AppearanceHeader.ForeColor = System.Drawing.Color.Black;
-            this.gridColumn3.AppearanceHeader.Options.UseFont = true;
-            this.gridColumn3.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn3.Caption = "설명";
-            this.gridColumn3.FieldName = "remark";
-            this.gridColumn3.Name = "gridColumn3";
-            this.gridColumn3.OptionsColumn.AllowEdit = false;
-            this.gridColumn3.OptionsColumn.AllowFocus = false;
-            this.gridColumn3.OptionsFilter.AllowAutoFilter = false;
-            this.gridColumn3.OptionsFilter.AllowFilter = false;
-            this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 357;
-            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1173,6 +1169,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gv_Step2)).EndInit();
             this.pnl_Step2_Top.ResumeLayout(false);
             this.tp_Step3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gc_Step3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gv_Step3)).EndInit();
+            this.pnl_Step3_Top.ResumeLayout(false);
             this.tp_Step4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gc_Step4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Step4)).EndInit();
@@ -1182,9 +1181,6 @@
             this.tlp_Step4_Checked_Count.PerformLayout();
             this.tlp_Step.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.styleController1)).EndInit();
-            this.pnl_Step3_Top.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gc_Step3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gv_Step3)).EndInit();
             this.ResumeLayout(false);
 
         }
